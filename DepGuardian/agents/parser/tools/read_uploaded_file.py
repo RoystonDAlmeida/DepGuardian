@@ -17,8 +17,9 @@ async def read_uploaded_file(tool_context: ToolContext) -> Dict[str, Union[str, 
         # Load most recent artifact
         artifact_id = artifact_ids[-1]
         artifact = await tool_context.load_artifact(artifact_id)
-        
-        file_name = artifact.inline_data.display_name
+        logger.info(f"Loaded artifact: {artifact}")
+
+        file_name = artifact_id     # Since, artifact_id contains the file name
         mime_type = artifact.inline_data.mime_type
         file_bytes = artifact.inline_data.data
         
