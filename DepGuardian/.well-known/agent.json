@@ -1,0 +1,4 @@
+{
+    "name": "root_agent",
+    "description": "Sequential agent that conducts dependency analysis from uploaded artifacts."
+}
