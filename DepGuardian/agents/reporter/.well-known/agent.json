@@ -1,0 +1,4 @@
+{
+    "name": "reporter_agent",
+    "description": "LLM Agent that finalizes final report on dependencies analysis"
+}

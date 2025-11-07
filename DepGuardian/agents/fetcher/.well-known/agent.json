@@ -1,0 +1,4 @@
+{
+    "name": "fetcher_agent",
+    "description": "LLM Agent that fetches dependencies metadata"
+}

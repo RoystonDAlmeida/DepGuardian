@@ -1,0 +1,4 @@
+{
+    "name": "analyzer_agent",
+    "description": "LLM agent that conducts dependency analysis from uploaded artifacts."
+}

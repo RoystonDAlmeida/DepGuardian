@@ -1,0 +1,4 @@
+{
+    "name": "parser_agent",
+    "description": "LLM Agent that parses dependencies in uploaded file"
+}
