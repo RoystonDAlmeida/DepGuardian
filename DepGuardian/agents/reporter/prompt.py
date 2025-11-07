@@ -15,7 +15,6 @@ The JSON structure must be:
 
 {
   "report_title": "Dependency Quality and Risk Report",
-  "generated_at": "<ISO timestamp>",
   "packages": [
       {
         "name": "<package_name>",
@@ -44,5 +43,5 @@ The JSON structure must be:
 — Popularity values: Convert numeric counts into rounded versions (e.g., 1,492,333 → "1.4M+")  
 — Output must be VALID JSON only.
 
-Invoke the tool 'save_generated_report_json' to save the report as an artifact.
+Write your output to the key 'final_report' in the session state.
 """
