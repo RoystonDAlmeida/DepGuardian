@@ -56,10 +56,11 @@ async def fetch_metadata(tool_context: ToolContext) -> Dict[str, Any]:
 
                     elif response.status_code == 200 and ecosystem == "npm":
                         # Minimize metadata as it is to be added to session state
-                        metadata = minimize_npm_metadata(response.json())
+                        metadata = await minimize_npm_metadata(response.json())
+
                         download_stats = await fetch_npm_download_stats(pkg_name)
                         metadata["downloads"] = download_stats  # attach stats
-                        
+                    
                         dependencies_metadata.append({
                             "name": pkg_name,
                             "metadata": metadata,
