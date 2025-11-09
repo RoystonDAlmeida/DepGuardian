@@ -1,7 +1,7 @@
 from google.adk.tools.tool_context import ToolContext
 from typing import Dict, Union
 import json
-from DepGuardian.agent import logger
+from DepGuardian.common.logger import logger
 
 async def read_uploaded_file(tool_context: ToolContext) -> Dict[str, Union[str, Dict]]:
     """

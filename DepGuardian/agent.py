@@ -1,13 +1,4 @@
-import logging
-
-# -------------------------------
-# Logging setup
-# -------------------------------
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+from DepGuardian.common.logger import logger
 
 from google.adk.agents import SequentialAgent
 import google.genai.types as types

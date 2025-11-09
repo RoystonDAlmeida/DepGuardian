@@ -8,10 +8,13 @@ logger = logging.getLogger(__name__)
 # The model to use for analysis
 GEMINI_MODEL = "gemini-2.5-flash-lite"
 
-# Define the LLM-powered analyzer agent
-analyzer_agent = Agent(
-    name="AnalyzerAgent",
-    model=GEMINI_MODEL,
-    instruction=ANALYZER_INSTRUCTION, 
-    output_key="current_analysis",
-)
+def get_analyzer_agent():
+    """Returns the analyzer agent."""
+    return Agent(
+        name="AnalyzerAgent",
+        model=GEMINI_MODEL,
+        instruction=ANALYZER_INSTRUCTION,
+        output_key="current_analysis",
+    )
+
+analyzer_agent = get_analyzer_agent()

@@ -1,6 +1,6 @@
 from google.adk.tools.tool_context import ToolContext
 from typing import Dict, Union
-from DepGuardian.agent import logger
+from DepGuardian.common.logger import logger
 
 async def set_dependencies(tool_context: ToolContext) -> Dict[str, Union[str, Dict]]:
     """
