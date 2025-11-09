@@ -10,6 +10,7 @@ logger.info = MagicMock()
 logger.exception = MagicMock()
 
 class TestParserAgent(unittest.TestCase):
+    """Pytest looks for Test* class when executed" Methods prefixed with test_ will be executed"""
     def test_read_requirements_txt(self):
         # --- Mocks ---
         mock_tool_context = MagicMock()
