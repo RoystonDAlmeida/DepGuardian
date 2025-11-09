@@ -1,7 +1,7 @@
 from google.adk.tools.tool_context import ToolContext
 import httpx
 from typing import Dict, Any
-from DepGuardian.agent import logger
+from DepGuardian.common.logger import logger
 from DepGuardian.utils.minimize_pypi_metadata import minimize_pypi_metadata
 from DepGuardian.utils.fetch_pypi_download_stats import fetch_pypi_download_stats
 from DepGuardian.utils.minimize_npm_metadata import minimize_npm_metadata
