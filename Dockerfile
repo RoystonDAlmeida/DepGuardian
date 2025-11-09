@@ -19,6 +19,9 @@ COPY pyproject.toml uv.lock ./
 # Copy application source
 COPY DepGuardian ./DepGuardian
 
+# Copy test source
+COPY tests ./tests
+
 # Install deps into a venv at /app/.venv
 # Avoid hardlinks as Docker overlay doesnt support them
 ENV UV_NO_CACHE=1
