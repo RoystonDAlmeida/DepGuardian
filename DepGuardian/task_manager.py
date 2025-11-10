@@ -1,4 +1,4 @@
-from .agent import execute
+from .agent import execute_bytes
 
 async def run(file):
-    return await execute(file)
+    return await execute_bytes(file)
