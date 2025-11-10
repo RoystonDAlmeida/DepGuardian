@@ -3,6 +3,7 @@ from DepGuardian.common.logger import logger
 from google.adk.agents import SequentialAgent
 import google.genai.types as types
 import json
+from typing import AsyncGenerator, Tuple
 from google.adk.apps import App
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.sessions import InMemorySessionService
@@ -52,68 +53,72 @@ async def initialize_session():
         session_id=SESSION_ID,
         user_id=USER_ID,
     )
-
-async def execute(upload_file):
+async def _save_upload_as_artifact(file_bytes: bytes, file_name: str, content_type: str) -> None:
     """
-    Takes an UploadFile from FastAPI, saves it as an artifact, and runs the agent pipeline.
+    Save uploaded file as an artifact for the current session.
+    Google ADK-compatible signature.
     """
 
-    # Read file bytes
-    file_bytes = await upload_file.read()
-    logger.info(f"Uploaded File data: {file_bytes}")
-
-    file_name = upload_file.filename
     logger.info(f"Uploaded File name: {file_name}")
+    logger.info(f"Uploaded File size: {len(file_bytes)} bytes")
 
-    # --- Choose a safe mime-type ---
-    # Gemini cannot accept application/json for inline data.
+    # Gemini cannot accept application/json bodies reliably. Use text/plain.
     if file_name.endswith(".json"):
-        mime_type = "text/plain"
+        mimetype = "text/plain"
     else:
-        mime_type = upload_file.content_type or "text/plain"
+        mimetype = content_type or "text/plain"
 
     file_artifact = types.Part.from_bytes(
-        data = file_bytes,
-        mime_type = mime_type
+        data=file_bytes,
+        mime_type=mimetype
     )
 
     try:
-        # --- Save file as ADK artifact ---
         artifact_id = await artifact_service.save_artifact(
-            app_name = APP_NAME,
-            user_id = USER_ID,
-            filename = file_name,
-            artifact = file_artifact,
-            session_id = SESSION_ID
+            app_name=APP_NAME,
+            user_id=USER_ID,
+            filename=file_name,
+            artifact=file_artifact,
+            session_id=SESSION_ID,
         )
-
-        logger.info(f"Uploaded file saved as artifact with version ID: {artifact_id}")
-
+        logger.info(f"Saved artifact id: {artifact_id}")
     except Exception as e:
-        logger.error(f"An unexpected error occurred during Python artifact save: {e}")
+        logger.error(f"Artifact save failed: {e}")
 
-    # ✅ 2. Trigger agent pipeline
+
+async def execute_bytes(bytes_data, filename, content_type):
+    """
+    ✅ Safe version replacing execute(upload_file)
+    """
+
+    # Save uploaded file as an artifact
+    await _save_upload_as_artifact(bytes_data, filename, content_type)
+
+    # Initialise a user message to start the agents pipeline
     user_message = types.Content(
         role="user",
-        parts=[types.Part(text=f"Process uploaded file")]
+        parts=[types.Part(text="Process uploaded file")]
     )
-
-    final_report = None
 
     async for event in runner.run_async(
         user_id=USER_ID,
         session_id=SESSION_ID,
         new_message=user_message
     ):
-        # The reporter agent output goes into final_report key
-        if event.is_final_response():
-            response_text = event.content.parts[0].text
-            try:
-                final_report = json.loads(response_text)
-            except json.JSONDecodeError:
-                logger.warning("⚠️ Reporter output is not valid JSON. Returning raw text.")
-                final_report = {"raw_output": response_text}
+        name = getattr(event, "agent_name", None) or getattr(event, "author", None)
 
-    return {
-        "report": final_report
-    }
+        if name:
+            yield ("step", name)
+
+        if event.is_final_response() and getattr(event, "author", None) == "ReporterAgent":
+            # "ReporterAgent" emits the final report response
+            text = event.content.parts[0].text if event.content.parts else ""
+
+            try:
+                json_data = json.loads(text)
+            except:
+                json_data = {"raw_output": text}
+
+            # Emit the final response with 'event' done
+            yield ("done", json_data)
+            return
