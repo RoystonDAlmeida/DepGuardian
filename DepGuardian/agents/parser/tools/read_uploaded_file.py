@@ -47,7 +47,7 @@ async def read_uploaded_file(tool_context: ToolContext) -> Dict[str, Union[str, 
 
             summary = f"Text file '{file_name}' loaded. Length: {len(decoded)} characters."
 
-        return {"status": "success", "message": summary, "filename": file_name}
+        return {"status": "success", "message": summary, "filename": file_name, "content": decoded}
 
     except Exception as e:
         err = f"Error in read_uploaded_file: {e}"
