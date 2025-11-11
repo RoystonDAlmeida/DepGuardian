@@ -6,12 +6,15 @@ import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import ProgressLoader from "@/components/ProgressLoader";
 import { toast } from "@/components/ui/use-toast";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
 const RUN_URL = `${API_BASE}/run`;
 const STREAM_URL = `${API_BASE}/stream`;
 
 export default function Upload() {
+  useDocumentTitle("DepGuardian | Upload");
+  
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
