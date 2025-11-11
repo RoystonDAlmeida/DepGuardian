@@ -1,0 +1,12 @@
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+test_agent
+test_extract.py
+requirements.txt
+.pytest_cache
+commands.txt
+node_modules
