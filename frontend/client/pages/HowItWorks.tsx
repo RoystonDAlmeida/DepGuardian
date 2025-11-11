@@ -1,8 +1,11 @@
 import { FileUp, Shield, FileText } from "lucide-react";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function HowItWorks() {
+  useDocumentTitle("DepGuardian | How It Works");
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white flex flex-col pb-20">
       <Header />
