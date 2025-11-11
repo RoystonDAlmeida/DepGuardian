@@ -10,10 +10,13 @@ import {
   parseReportPackages, 
   getHighestRisk 
 } from "@/utils/packageUtils";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 const RISK_ORDER = ["High", "Medium", "Low", "Secure"];
 
 export default function Report() {
+  useDocumentTitle("DepGuardian | Report");
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -22,9 +25,13 @@ export default function Report() {
 
   if (!report) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white p-8">
-        <p className="text-center text-gray-400">Report not found.</p>
-      </div>
+      <>
+        <Header />
+          <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white p-8">
+            <p className="text-center text-gray-400">Package not found.</p>
+          </div>
+        <BottomNav />
+      </>
     );
   }
 
