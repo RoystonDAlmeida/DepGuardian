@@ -146,14 +146,14 @@ export function getStats(packages: any[]): { High: number; Medium: number; Low: 
  */
 export function parseReportPackages(report: any): any[] {
   let packages: any[] = [];
-  
+
   try {
     if (report?.data?.raw_output) {
       // Extract JSON from markdown code block
       const jsonMatch = report.data.raw_output.match(/```json\n([\s\S]*?)\n```/);
       if (jsonMatch && jsonMatch[1]) {
         const parsed = JSON.parse(jsonMatch[1]);
-        packages = parsed.final_report?.packages || [];
+        packages = parsed.final_report?.packages || parsed.packages || [];
       }
     } else if (report?.data?.final_report?.packages) {
       // Data is already parsed
