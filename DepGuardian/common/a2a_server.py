@@ -59,7 +59,7 @@ def create_app() -> FastAPI:
     @app.get("/health")
     async def health():
         """Health check."""
-        
+
         return {"status": "ok"}
 
     # ---------------------------
@@ -69,6 +69,7 @@ def create_app() -> FastAPI:
     @app.get("/artifacts")
     async def list_artifacts():
         """Return list of stored artifacts for the current session."""
+        
         artifacts = await artifact_service.list_artifact_keys(app_name=APP_NAME, user_id = USER_ID, session_id=SESSION_ID)
 
         return {"artifacts": artifacts}
