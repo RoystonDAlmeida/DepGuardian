@@ -5,8 +5,11 @@ import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { parseReportPackages, getStats, getHighestRisk } from "@/utils/packageUtils";
 import { ConfirmDialog, Toast } from "@/utils/deleteUtils";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function Reports() {
+  useDocumentTitle("DepGuardian | Reports");
+  
   const [reports, setReports] = useState(() => 
     JSON.parse(localStorage.getItem("depguardian_reports") || "[]")
   );
