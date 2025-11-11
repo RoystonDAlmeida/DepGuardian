@@ -56,13 +56,22 @@ def create_app() -> FastAPI:
         expose_headers=["*"],
     )
 
+    @app.get("/health")
+    async def health():
+        """Health check."""
+        return {"status": "ok"}
 
+    # ---------------------------
+    # Endpoint: GET /artifacts
+    # Returns list of stored artifacts for the current session
+    # ---------------------------
     @app.get("/artifacts")
     async def list_artifacts():
         """Return list of stored artifacts for the current session."""
         artifacts = await artifact_service.list_artifact_keys(app_name=APP_NAME, user_id = USER_ID, session_id=SESSION_ID)
 
         return {"artifacts": artifacts}
+
     # ---------------------------
     # Endpoint: POST /run
     # Accepts a file, triggers pipeline, pushes step/done/error events to the queue
