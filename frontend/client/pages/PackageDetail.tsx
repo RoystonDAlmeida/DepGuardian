@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { getVulnBadges, getStatusBadge } from "@/utils/packageUtils";
 import { AlertTriangle, Shield, ExternalLink, TrendingUp, Calendar } from "lucide-react";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export default function PackageDetail() {
   const { id, packageId } = useParams();
@@ -18,7 +19,7 @@ export default function PackageDetail() {
       const jsonMatch = report.data.raw_output.match(/```json\n([\s\S]*?)\n```/);
       if (jsonMatch && jsonMatch[1]) {
         const parsed = JSON.parse(jsonMatch[1]);
-        packages = parsed.final_report?.packages || [];
+        packages = parsed.final_report?.packages || parsed.packages || [];
       }
     } else if (report?.data?.final_report?.packages) {
       packages = report.data.final_report.packages;
@@ -29,11 +30,17 @@ export default function PackageDetail() {
 
   const pkg = packages[parseInt(packageId)];
 
+  useDocumentTitle(`DepGuardian | ${pkg.name} details`);
+
   if (!pkg) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white p-8">
-        <p className="text-center text-gray-400">Package not found.</p>
-      </div>
+      <>
+        <Header />
+          <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white p-8">
+            <p className="text-center text-gray-400">Package not found.</p>
+          </div>
+        <BottomNav />
+      </>
     );
   }
 
