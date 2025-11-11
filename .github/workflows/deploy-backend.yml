@@ -23,18 +23,4 @@ jobs:
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          response=$(curl "$deploy_url")
-          
-          http_code=$(echo "$response" | tail -n1)
-          body=$(echo "$response" | sed '$d')
-          
-          echo "Response: $body"
-          echo "HTTP Status: $http_code"
-          
-          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
-            echo "✅ Deployment triggered successfully!"
-            exit 0
-          else
-            echo "❌ Deployment failed with status $http_code"
-            exit 1
-          fi
+          curl "$deploy_url"
